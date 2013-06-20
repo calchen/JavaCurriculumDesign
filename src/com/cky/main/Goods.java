@@ -1,20 +1,30 @@
 package com.cky.main;
 
 /**
- * 文件名： Goods.java 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 创建时间：2013-6-8
- * 上午11:09:46 最后修改：2013-6-8 上午11:09:46 类说明 ：
+ * 文件名： Goods.java 
+ * 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 
+ * 创建时间：2013-6-8 上午11:09:46 
+ * 最后修改：2013-6-14 下午12:59:00
+ * 类说明 ：货物类
  */
 public class Goods {
+	//编号
 	private String ID;
+	//批次
 	private String batch;
+	//名称
 	private String name;
+	//所在仓库
+	private String warehouse;
+	//数目
 	private int num;
-
-	public Goods(String iD, String batch, String name, int num) {
+	
+	public Goods(String ID, String batch, String warehouse, String name, int num) {
 		super();
-		ID = iD;
+		this.ID = ID;
 		this.batch = batch;
 		this.name = name;
+		this.warehouse = warehouse;
 		this.num = num;
 	}
 
@@ -30,12 +40,16 @@ public class Goods {
 		return name;
 	}
 
+	public String getWarehouse() {
+		return warehouse;
+	}
+
 	public int getNum() {
 		return num;
 	}
 
-	public void setID(String ID) {
-		this.ID = ID;
+	public void setID(String iD) {
+		ID = iD;
 	}
 
 	public void setBatch(String batch) {
@@ -44,6 +58,10 @@ public class Goods {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
 	}
 
 	public void setNum(int num) {

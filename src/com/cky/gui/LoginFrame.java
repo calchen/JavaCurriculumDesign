@@ -2,9 +2,12 @@ package com.cky.gui;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -26,12 +29,15 @@ import com.cky.encryption.MD5;
 import com.cky.main.User;
 
 /**
- * 文件名： LoginFrame.java 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 创建时间：2013-6-8
- * 上午11:19:22 最后修改：2013-6-8 上午11:19:22 类说明 ：登录界面
+ * 文件名： LoginFrame.java 
+ * 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 
+ * 创建时间：2013-6-8 上午11:19:22 
+ * 最后修改：2013-6-8 上午11:19:22 
+ * 类说明 ：登录界面
  */
 public class LoginFrame extends JFrame {
 	private int width = 289;
-	private int height = 227;
+	private int height = 227-30;
 
 	private String type = "employer";
 	private static JFrame jFrame;
@@ -59,11 +65,6 @@ public class LoginFrame extends JFrame {
 			// Windows风格
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-			// Java默认风格
-			// UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel")
-			// ;
-
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (InstantiationException ex) {
@@ -80,10 +81,10 @@ public class LoginFrame extends JFrame {
 		setBounds((((int) dm.getWidth() - width) / 2),
 				(((int) dm.getHeight() - height) / 2), width, height);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				LoginFrame.class.getResource("/logo.jpg")));
-
+				LoginFrame.class.getResource("/com/cky/res/logo.jpg")));
+		
 		setTitle("超市仓库管理系统");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setVisible(true);
 		// 设置窗口大小不可变
 		setResizable(false);
@@ -112,53 +113,32 @@ public class LoginFrame extends JFrame {
 		passwordField.setBounds(103, 61, 146, 21);
 		contentPane.add(passwordField);
 
-		JRadioButton employerRadioButton = new JRadioButton("员工");
-		employerRadioButton.setBounds(62, 99, 49, 23);
-		contentPane.add(employerRadioButton);
-		employerRadioButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				type = "employer";
-			}
-		});
-
-		JRadioButton managerRadioButton = new JRadioButton("主管");
-		managerRadioButton.setBounds(173, 99, 54, 23);
-		contentPane.add(managerRadioButton);
-		managerRadioButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				type = "manager";
-			}
-		});
-
-		ButtonGroup group = new ButtonGroup();
-		group.add(managerRadioButton);
-		group.add(employerRadioButton);
 
 		JButton loginButton = new JButton("登陆");
-		loginButton.setBounds(68, 146, 146, 23);
+		loginButton.setBounds(68, 110, 146, 23);
 		contentPane.add(loginButton);
 		loginButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				login(userNameTextField.getText(),
-						String.valueOf(passwordField.getPassword()));
+				//离线测试
+//				login(userNameTextField.getText(),
+//						String.valueOf(passwordField.getPassword()));
+				new MainFrame(new User(userNameTextField.getText(), "张三",String.valueOf(passwordField.getPassword()), "主管"));
+				//new MainFrame(new User(userNameTextField.getText(), "张三",String.valueOf(passwordField.getPassword()), "员工"));
+				jFrame.dispose();
 			}
 		});
 	}
 
-	private void login(String uerName, String passwd) {
+	private void login(String ID, String passwd) {
 		DBC dbc = new DBC();
 		if (dbc.checkConnect()) {
 			passwd = new MD5().encrypt(passwd);
 			String sql = "SELECT * FROM USER_TABLE WHERE EMPLOYEE_TABLE_ID='"
-					+ uerName + "'";
+					+ ID + "'";
 			ResultSet result = dbc.query(sql);
-			String realpasswd = null, type = null;
+			String realpasswd = null, type = null,name = null;
 
 			try {
 				while (result.next()) {
@@ -171,16 +151,16 @@ public class LoginFrame extends JFrame {
 			}
 
 			if (realpasswd.equals(passwd)) {
-				new MainFrame(new User(uerName, realpasswd, type));
+				new MainFrame(new User(ID, name,realpasswd, type));
 				jFrame.dispose();
 			} else {
-				if (uerName.equals("")) {
+				if (ID.equals("")) {
 					JOptionPane.showMessageDialog(null, "请输入用户名", "错误",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					// 密码错误提示窗口
 					JOptionPane.showMessageDialog(null,
-							"用户名或密码错误！如忘记密码请联系管理员，联系电话：12345678901", "错误",
+							"用户名或密码错误！如忘记密码请联系主管，联系电话：12345678901", "错误",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

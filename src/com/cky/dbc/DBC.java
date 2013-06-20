@@ -143,14 +143,14 @@ public class DBC {
 
 	// 数据库更新操作
 	public boolean update(String sql) {
-		int i = 0;
+		
 		connect();
 		try {
-			i = statement.executeUpdate(sql);
+			statement.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
-		return i != 0 ? true : false;
+		return true;
 	}
 
 	public static String getDbURL() {
