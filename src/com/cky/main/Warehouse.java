@@ -7,13 +7,14 @@ package com.cky.main;
  * 类说明 ：仓库类
  */
 public class Warehouse {
-	//编号
+	// 编号
 	private String ID;
-	//容量
+	// 容量
 	private int size;
-	//位置
+	// 位置
 	private String location;
 
+	// 构造方法
 	public Warehouse(String ID, int size, String location) {
 		super();
 		this.ID = ID;
@@ -21,6 +22,7 @@ public class Warehouse {
 		this.location = location;
 	}
 
+	// ID、size、location的get和set方法
 	public String getID() {
 		return ID;
 	}

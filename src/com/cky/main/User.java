@@ -8,23 +8,26 @@ package com.cky.main;
  * 类说明 ：用户类
  */
 public class User {
-	//编号
+	// 编号
 	private String ID;
-	//名称
+	// 名称
 	private String name;
-	//密码
+	// 密码
 	private String passwd;
-	//类型
+	// 类型
 	private String type;
 
+	// 构造方法
 	public User(String ID, String name, String passwd, String type) {
-		super();
+
 		this.ID = ID;
 		this.name = name;
 		this.passwd = passwd;
 		this.type = type;
+
 	}
 
+	// ID、name、passwd、type的get和set方法
 	public String getID() {
 		return ID;
 	}
@@ -56,5 +59,4 @@ public class User {
 	public void setType(String type) {
 		this.type = type;
 	}
-
 }

@@ -1,32 +1,20 @@
 package com.cky.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 import com.cky.dbc.DBC;
 import com.cky.encryption.DBEncrypt;
 
 /**
- * 文件名： DBSetFrame.java 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 创建时间：2013-6-8
- * 上午11:19:33 最后修改：2013-6-8 上午11:19:33 类说明 ：
+ * 文件名： DBSetFrame.java 
+ * 作 者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com 
+ * 创建时间：2013-6-8 上午11:19:33 
+ * 最后修改：2013-6-20 下午11:20:23 
+ * 类说明 ：用于设置数据相关参数
  */
 public class DBSetFrame extends JFrame {
 	private JTextField hostNameTextField;
@@ -65,7 +53,7 @@ public class DBSetFrame extends JFrame {
 		setBounds((((int) dm.getWidth() - width) / 2),
 				(((int) dm.getHeight() - height) / 2), width, height);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				LoginFrame.class.getResource("/logo.jpg")));
+				LoginFrame.class.getResource("/com/cky/res/logo.jpg")));
 
 		setTitle("数据库设置");
 		setVisible(true);
@@ -149,23 +137,24 @@ public class DBSetFrame extends JFrame {
 				}
 				BufferedWriter bw;
 				try {
-
 					DBEncrypt dbEncrypt = new DBEncrypt();
 
 					hostName = hostNameTextField.getText();
 					port = portTextField.getText();
 					name = userNametextField.getText();
 					password = String.valueOf(passwordField.getPassword());
-					dbURL = "jdbc:mysql://" + hostName + ":" + port + "/cms";
+					dbURL = "jdbc:mysql://" + hostName + ":" + port
+							+ "/SUPERMARKETDB";
+					// 设置数据库URL、用户名、密码
 					DBC.setDbURL(dbURL);
 					DBC.setDbUserName(name);
 					DBC.setDbPasswd(password);
 
 					// 检查输入的信息是否正确
 					if (new DBC().checkConnect()) {
+						// 如果信息正确就加密并写入文件
 						bw = new BufferedWriter(new FileWriter(file));
 						file.createNewFile();
-
 						bw.write(dbEncrypt.encrypt(hostName));
 						bw.newLine();
 						bw.write(dbEncrypt.encrypt(port));

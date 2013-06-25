@@ -8,17 +8,18 @@ package com.cky.main;
  * 类说明 ：货物类
  */
 public class Goods {
-	//编号
+	// 编号
 	private String ID;
-	//批次
+	// 批次
 	private String batch;
-	//名称
+	// 名称
 	private String name;
-	//所在仓库
+	// 所在仓库
 	private String warehouse;
-	//数目
+	// 数目
 	private int num;
-	
+
+	// 构造方法
 	public Goods(String ID, String batch, String warehouse, String name, int num) {
 		super();
 		this.ID = ID;
@@ -28,6 +29,7 @@ public class Goods {
 		this.num = num;
 	}
 
+	// ID、batch、name、warehouse、num的get和set方法
 	public String getID() {
 		return ID;
 	}
@@ -67,5 +69,4 @@ public class Goods {
 	public void setNum(int num) {
 		this.num = num;
 	}
-
 }

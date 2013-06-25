@@ -1,28 +1,20 @@
 package com.cky.dbc;
 
+import java.io.*;
+import java.sql.*;
+import javax.swing.*;
+
+import com.cky.encryption.DBEncrypt;
+import com.cky.gui.DBSetFrame;
+
 /**
  * 文件名： DBC.java
  * 作   者： 陈恺垣 E-mail:chenkaiyuan1993@gmail.com
  * 创建时间：2013-6-8 上午11:24:06
- * 最后修改：2013-6-8 上午11:24:06
- * 类说明 ：
+ * 最后修改：2013-06-25 上午0:06:00
+ * 类说明 ：实现程序与数据库的链接，查询，更新。
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.JOptionPane;
-import com.cky.encryption.DBEncrypt;
-import com.cky.gui.DBSetFrame;
-
 public class DBC {
-
 	private Connection ct = null;
 	private Statement statement = null;
 	private static String dbURL = "";
@@ -30,10 +22,9 @@ public class DBC {
 	private static String dbPasswd = "";
 	private static String dbconfig = "d:\\dbConfig.dat";
 
-	// 用于读取com.wangjing.dbc.dbConfig.dat中的数据库URK以及用户名密码
+	// 用于读取dbConfig.dat中的数据库URL以及用户名密码
 	public void loadDBInfo() {
 		File file = new File(dbconfig);
-		//System.out.println(file.exists());
 		if (!file.exists()) {
 			// 如果dbConfig.dat文件不存在就显示DBSetConfig窗口进行输入
 			new DBSetFrame();
@@ -44,16 +35,13 @@ public class DBC {
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				String hostName = dbEncrypt.deciphering(br.readLine());
 				String port = dbEncrypt.deciphering(br.readLine());
+				// 设置数据库URL、用户名、密码
 				DBC.dbURL = "jdbc:mysql://" + hostName + ":" + port
 						+ "/SUPERMARKETDB";
 				DBC.dbUserName = dbEncrypt.deciphering(br.readLine());
 				DBC.dbPasswd = dbEncrypt.deciphering(br.readLine());
+				// 释放资源
 				br.close();
-
-				// 测试用
-				// System.out.println(DBC.dbURL);
-				// System.out.println(DBC.dbUserName);
-				// System.out.println(DBC.dbPasswd);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -64,7 +52,6 @@ public class DBC {
 
 	// 建立连接
 	private void connect() {
-		// System.out.println(dbUserName+dbPasswd+dbURL);
 		try {
 			// 加载驱动
 			Class.forName("com.mysql.jdbc.Driver");
@@ -143,7 +130,7 @@ public class DBC {
 
 	// 数据库更新操作
 	public boolean update(String sql) {
-		
+
 		connect();
 		try {
 			statement.executeUpdate(sql);
@@ -153,6 +140,7 @@ public class DBC {
 		return true;
 	}
 
+	// dbURL、dbUserName、dbPasswd、dbconfig的get、set方法
 	public static String getDbURL() {
 		return dbURL;
 	}
@@ -163,6 +151,10 @@ public class DBC {
 
 	public static String getDbPasswd() {
 		return dbPasswd;
+	}
+
+	public static String getDBConfig() {
+		return dbconfig;
 	}
 
 	public static void setDbURL(String dbURL) {
@@ -177,12 +169,7 @@ public class DBC {
 		DBC.dbPasswd = dbPasswd;
 	}
 
-	public static String getDBConfig() {
-		return dbconfig;
-	}
-
 	public static void setDbconfig(String dbconfig) {
 		DBC.dbconfig = dbconfig;
 	}
-	
 }
